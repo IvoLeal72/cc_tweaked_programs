@@ -1,4 +1,4 @@
-turtle_utils=require('lib.turtle_utils')
+turtle_utils=require('lib.turtle.turtle_utils')
 
 i=0
 while i<50 do
