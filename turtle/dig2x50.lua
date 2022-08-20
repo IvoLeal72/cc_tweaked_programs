@@ -1,6 +1,6 @@
-turtle_utils=require('lib.turtle.turtle_utils')
+local turtle_utils=require('lib.turtle.utils')
 
-i=0
+local i=0
 while i<50 do
     turtle_utils.check_fuel()
     turtle.dig()
@@ -8,5 +8,5 @@ while i<50 do
     turtle.digUp()
     sleep(0)
 end
-spk=peripheral.wrap('left')
+local spk=peripheral.wrap('left')
 spk.playNote('chime')
