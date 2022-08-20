@@ -8,6 +8,8 @@ local function check_fuel()
         turtle.select(slot)
         sleep(0)
     end
+    x=turtle.select(slot)
+    
 end
 
 return {check_fuel=check_fuel}
