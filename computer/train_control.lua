@@ -8,13 +8,13 @@ function check_net()
         if id==other_pc.getID() then
             if msg=='start' then
                 rednet.send(id, 'started', 'train_control')
-                rs.setOutput('back', true)
+                redstone.setOutput('back', true)
             end
             if msg=='started' then
-                rs.setOutput('back', true)
+                redstone.setOutput('back', true)
             end
             sleep(1)
-            rs.setOutput('back', false)
+            redstone.setOutput('back', false)
         end
     end
 end
@@ -22,7 +22,7 @@ end
 function check_rs()
     while true do
         os.pullEvent('redstone')
-        if rs.getInput('top') then
+        if redstone.getInput('top') then
             rednet.send(other_pc.getID(), 'start', 'train_control')
         end
     end
