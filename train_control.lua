@@ -21,7 +21,7 @@ end
 
 function check_rs()
     while true do
-        os.pullEvent('redstone')
+        os.pullEvent("redstone")
         if redstone.getInput('top') then
             rednet.send(other_pc.getID(), 'start', 'train_control')
         end
