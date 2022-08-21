@@ -25,9 +25,9 @@ for j=1,config["tunnels"] do
     --move
     turtle.up()
     if config["direction"]=="left" then
-        turtle.turnLeft()
-    else
         turtle.turnRight()
+    else
+        turtle.turnLeft()
     end
     i=0
     while i<config["turtles"]*3 do
