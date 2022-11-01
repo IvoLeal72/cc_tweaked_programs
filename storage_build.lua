@@ -1,5 +1,8 @@
 turtle.select(1)
-while turtle.getItemCount()>=4 do
+while true do
+    while turtle.getItemCount()<4 do
+        turtle.select(turtle.getSelectedSlot()+1)
+    end
     if turtle.placeDown() then
         -- go to second chest and place it
         turtle.up()
@@ -18,6 +21,12 @@ while turtle.getItemCount()>=4 do
         turtle.down()
         turtle.down()
         turtle.down()
+        turtle.turnRight()
+        if not turtle.forward() then
+            break
+        end
+        turtle.turnLeft()
+    else
         turtle.turnRight()
         if not turtle.forward() then
             break
