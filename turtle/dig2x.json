@@ -1,6 +1,6 @@
 {
     "direction":"left",
-    "depth":50,
-    "turtles":5,
-    "tunnels":2
+    "depth":60,
+    "turtles":0,
+    "tunnels":1
 }

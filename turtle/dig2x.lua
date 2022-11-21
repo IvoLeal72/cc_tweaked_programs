@@ -9,7 +9,8 @@ for j=1,config["tunnels"] do
     while i<config["depth"] do
         turtle_utils.check_fuel()
         turtle.dig()
-        if turtle.forward() then i=i+1 end
+        if turtle.forward() then i=i+1
+        else turtle.attack() end
         turtle.digUp()
         sleep(0)
     end
@@ -18,7 +19,11 @@ for j=1,config["tunnels"] do
     i=0
     while i<config["depth"] do
         turtle_utils.check_fuel()
-        if turtle.forward() then i=i+1 end
+        if turtle.forward() then i=i+1 
+        else 
+            turtle.dig()
+            turtle.attack()
+        end
         sleep(0)
     end
 
