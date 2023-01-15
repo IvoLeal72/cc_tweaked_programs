@@ -13,7 +13,7 @@ local queue = {}
 local function dig_1x2(cmd_table)
     expect(1, cmd_table, "table")
     field(cmd_table, "depth", "number")
-    depth = cmd_table["depth"]
+    local depth = cmd_table["depth"]
     range(depth, 0)
 
     local i = 0
@@ -44,9 +44,9 @@ end
 local function move(cmd_table)
     expect(1, cmd_table, "table")
     field(cmd_table, "left", "boolean")
-    left = cmd_table["left"]
+    local left = cmd_table["left"]
     field(cmd_table, "ammount", "number")
-    ammount = cmd_table["ammount"]
+    local ammount = cmd_table["ammount"]
     range(ammount, 0)
 
     turtle.up()
@@ -55,7 +55,7 @@ local function move(cmd_table)
     else
         turtle.turnLeft()
     end
-    i = 0
+    local i = 0
     while i < ammount * 3 do
         turtle_utils.check_fuel()
         if turtle.forward() then i = i + 1
@@ -97,7 +97,7 @@ end
 
 local function process_cmd(cmd_table)
     expect(1, cmd_table, "table")
-    action = cmd_table["action"]
+    local action = cmd_table["action"]
 
     if action == "locate" then cmd_response(cmd_table, gps.locate())
     elseif action == "ping" then
@@ -113,7 +113,7 @@ end
 
 local function try_connect(id)
     rednet.send(id, os.getComputerID(), "turtle_miner_connect")
-    new_id, msg = rednet.receive("turtle_miner_connect_response")
+    local new_id, msg = rednet.receive("turtle_miner_connect_response")
     if new_id == id then
         controller = id
         connected = true
@@ -128,12 +128,12 @@ local function coms_thread()
     rednet.open("left")
     while true do
         if not connected then --disconnected
-            id = rednet.receive("turtle_miner_search")
+            local id = rednet.receive("turtle_miner_search")
             if controller < 0 or id == controller then
                 try_connect(id)
             end
         else --connected
-            event, id, msg, protocol = os.pullEvent()
+            local event, id, msg, protocol = os.pullEvent()
             if event == "rednet_message" then
                 if id == controller and protocol == "turtle_miner_command" then process_cmd(msg) end
             elseif event == "timer" then
@@ -148,9 +148,9 @@ end
 local function queue_thread()
     while true do
         if #queue > 0 then
-            cmd_table = table.remove(queue, 0)
-            action = cmd_table["action"]
-            valid_cmd = true
+            local cmd_table = table.remove(queue, 0)
+            local action = cmd_table["action"]
+            local valid_cmd = true
             if action == "dig_1x2" then
                 dig_1x2(cmd_table)
             elseif action == "move" then

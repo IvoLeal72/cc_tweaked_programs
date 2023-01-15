@@ -1,10 +1,10 @@
-other_pc=peripheral.find('computer')
+local other_pc=peripheral.find('computer')
 other_pc.turnOn()
 rednet.open('bottom')
 
-function check_net()
+local function check_net()
     while true do
-        id, msg=rednet.receive('train_control')
+        local id, msg=rednet.receive('train_control')
         if id==other_pc.getID() then
             if msg=='start' then
                 rednet.send(id, 'started', 'train_control')
@@ -19,7 +19,7 @@ function check_net()
     end
 end
 
-function check_rs()
+local function check_rs()
     while true do
         os.pullEvent("redstone")
         if redstone.getInput('top') then
