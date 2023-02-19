@@ -64,11 +64,11 @@ local function msg_handler(id, msg)
         return
     end
 
-    if msg.id==nil then
+    if msg.job_id==nil then
         return
     end
 
-    local job=table.remove(turtle.pending_cmds, msg.id)
+    local job=table.remove(turtle.pending_cmds, msg.job_id)
     if job==nil then
         return
     end

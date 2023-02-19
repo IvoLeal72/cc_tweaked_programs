@@ -89,7 +89,7 @@ end
 
 local function send_response(id, return_value)
     rednet.send(server_id, {
-        id = id,
+        job_id = id,
         return_value = return_value
     }, PROTOCOL_NAME)
 end
