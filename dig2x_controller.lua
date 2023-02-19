@@ -58,6 +58,7 @@ local function gen_random_name()
 end
 
 local function msg_handler(id, msg)
+    print(id..' '..textutils.serialise(msg))
     local turtle = turtles[id]
     if turtle==nil then
         return
@@ -78,7 +79,7 @@ local function msg_handler(id, msg)
 
     if func=='connect' then
         turtle.status=status.CONNECTED
-        turtle.name=args
+        turtle.name=ret
     end
 end
 
@@ -91,6 +92,7 @@ end
 local function scan_mode()
     while true do
         utils.clearAndResetTerm()
+        print(os.clock())
         print('Searching for turtles...')
         print('Press "q" to stop')
         table.sort(turtles)
