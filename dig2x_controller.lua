@@ -85,7 +85,7 @@ end
 
 local function list_turtles()
     for k,v in pairs(turtles) do
-        print(k .. ' ' .. v.name .. v.status)
+        print(k .. ' ' .. v.name .. v.status .. #v.pending_cmds)
     end
 end
 
