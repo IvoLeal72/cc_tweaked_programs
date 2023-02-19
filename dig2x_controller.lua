@@ -77,9 +77,8 @@ local function msg_handler(id, msg)
     local ret=msg.ret
 
     if func=='connect' then
-        if ret==true then
-            turtle.status=status.CONNECTED
-        end
+        turtle.status=status.CONNECTED
+        turtle.name=args
     end
 end
 
