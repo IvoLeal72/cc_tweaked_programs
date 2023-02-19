@@ -143,3 +143,5 @@ local function startup()
     utils.clearAndResetTerm()
     list_turtles()
 end
+
+startup()
