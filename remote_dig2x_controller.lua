@@ -97,7 +97,7 @@ local function scan_mode()
             func = 'search',
             args = nil
         }, PROTOCOL_NAME)
-        local timer=os.timer()
+        local timer=os.startTimer(2)
         local event_data={os.pullEvent()}
         local event=event_data[1]
         if event == 'rednet_message' then
