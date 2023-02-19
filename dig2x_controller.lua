@@ -91,7 +91,6 @@ end
 
 local function scan_mode()
     while true do
-        utils.clearAndResetTerm()
         print(os.clock())
         print('Searching for turtles...')
         print('Press "q" to stop')
