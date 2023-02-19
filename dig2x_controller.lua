@@ -86,13 +86,13 @@ end
 
 local function list_turtles()
     for k,v in pairs(turtles) do
-        print(k .. ' ' .. v.name .. v.status .. #v.pending_cmds)
+        print(k .. ' ' .. v.name .. v.status)
     end
 end
 
 local function scan_mode()
     while true do
-        print(os.clock())
+        utils.clearAndResetTerm()
         print('Searching for turtles...')
         print('Press "q" to stop')
         table.sort(turtles)
