@@ -31,6 +31,7 @@ local function send_cmd(func, args, turtle_id)
     end
     local job_id=turtle.last_job_id+1
     local job={
+        id=job_id,
         func=func,
         args=args
     }
@@ -64,11 +65,11 @@ local function msg_handler(id, msg)
         return
     end
 
-    if msg.job_id==nil then
+    if msg.id==nil then
         return
     end
 
-    local job=table.remove(turtle.pending_cmds, msg.job_id)
+    local job=table.remove(turtle.pending_cmds, msg.id)
     if job==nil then
         return
     end

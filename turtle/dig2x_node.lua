@@ -74,9 +74,9 @@ local function function_runner()
             local data = table.remove(command_buffer, 0)
             local ret = function_map[data.func](data.args)
             table.insert(command_resp_buffer, {
-                ['id'] = data.id,
-                ['return_value'] = ret,
-                ['func'] = data.func
+                id = data.id,
+                return_value = ret,
+                func = data.func
             })
             os.queueEvent('new_response')
             if data.func == 'disconnect' then
@@ -89,7 +89,7 @@ end
 
 local function send_response(id, return_value)
     rednet.send(server_id, {
-        job_id = id,
+        id = id,
         return_value = return_value
     }, PROTOCOL_NAME)
 end
