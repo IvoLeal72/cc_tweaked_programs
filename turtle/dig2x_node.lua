@@ -148,5 +148,6 @@ end
 
 os.setComputerLabel('waiting... (id='..os.getComputerID()..')')
 connect()
+print('left connect')
 parallel.waitForAll(response_sender, function_runner, rednet_handler)
 os.setComputerLabel(nil)
