@@ -135,6 +135,11 @@ local function scan_mode()
     end
 end
 
+local function main_menu()
+    utils.clearAndResetTerm()
+    utils.write_center('Turtle Controller')
+end
+
 local function startup()
     utils.rednet_all_modems()
     rednet.broadcast({ func = 'disconnect', args = {}, id = 0 }, PROTOCOL_NAME)
@@ -145,8 +150,7 @@ local function startup()
     sleep(1)
     turtles = {}
     scan_mode()
-    utils.clearAndResetTerm()
-    list_turtles()
+    main_menu()
 end
 
 startup()
