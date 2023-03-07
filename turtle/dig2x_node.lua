@@ -138,7 +138,7 @@ local function connect()
         if msg.func == 'search' then
             server_id = id
             send_response(msg.id, true)
-        elseif msg.func == 'connect' and id==server_id then
+        elseif msg.func == 'connect' and id == server_id then
             os.setComputerLabel(msg.args)
             send_response(msg.id, msg.args)
             return
@@ -146,7 +146,7 @@ local function connect()
     end
 end
 
-os.setComputerLabel('waiting... (id='..os.getComputerID()..')')
+os.setComputerLabel('waiting... (id=' .. os.getComputerID() .. ')')
 connect()
 parallel.waitForAll(response_sender, function_runner, rednet_handler)
 os.setComputerLabel(nil)

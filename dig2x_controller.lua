@@ -25,18 +25,18 @@ local names = {
 local turtles = {}
 
 local function send_cmd(func, args, turtle_id)
-    local turtle=turtles[turtle_id]
-    if turtle==nil then
+    local turtle = turtles[turtle_id]
+    if turtle == nil then
         return nil
     end
-    local job_id=turtle.last_job_id+1
-    local job={
-        id=job_id,
-        func=func,
-        args=args,
-        ts=os.time()
+    local job_id = turtle.last_job_id + 1
+    local job = {
+        id = job_id,
+        func = func,
+        args = args,
+        ts = os.time()
     }
-    turtle.pending_cmds[job_id]=job
+    turtle.pending_cmds[job_id] = job
     rednet.send(turtle_id, job, PROTOCOL_NAME)
 end
 
@@ -60,36 +60,36 @@ local function gen_random_name()
 end
 
 local function msg_handler(id, msg)
-    print(id..' '..textutils.serialise(msg))
+    print(id .. ' ' .. textutils.serialise(msg))
     local turtle = turtles[id]
-    if turtle==nil then
+    if turtle == nil then
         return
     end
 
-    if msg.id==nil then
+    if msg.id == nil then
         return
     end
 
-    local job=table.remove(turtle.pending_cmds, msg.id)
-    if job==nil then
+    local job = table.remove(turtle.pending_cmds, msg.id)
+    if job == nil then
         return
     end
 
-    local func=job.func
-    local args=job.args
-    local ret=msg.return_value
+    local func = job.func
+    local args = job.args
+    local ret = msg.return_value
 
-    if func=='connect' then
-        if turtle.status==status.CONNECTING then
-            turtle.status=status.CONNECTED
-            turtle.name=ret
+    if func == 'connect' then
+        if turtle.status == status.CONNECTING then
+            turtle.status = status.CONNECTED
+            turtle.name = ret
         end
     end
 end
 
 local function list_turtles()
-    for k,v in pairs(turtles) do
-        print(k .. ' ' .. v.name .. ' '.. v.status)
+    for k, v in pairs(turtles) do
+        print(k .. ' ' .. v.name .. ' ' .. v.status)
     end
 end
 
@@ -105,16 +105,16 @@ local function scan_mode()
             func = 'search',
             args = nil
         }, PROTOCOL_NAME)
-        local timer=os.startTimer(2)
-        local event_data={os.pullEvent()}
-        local event=event_data[1]
+        local timer = os.startTimer(2)
+        local event_data = { os.pullEvent() }
+        local event = event_data[1]
         if event == 'rednet_message' then
             os.cancelTimer(timer)
-            local id, msg=event_data[2], event_data[3]
+            local id, msg = event_data[2], event_data[3]
             if id ~= nil then
-                if msg.id==0 then
-                    if msg.return_value==true then
-                        if turtles[id]~=nil then
+                if msg.id == 0 then
+                    if msg.return_value == true then
+                        if turtles[id] ~= nil then
                             send_cmd('connect', turtles[id].name, id)
                         else
                             local name = gen_random_name()
@@ -122,7 +122,7 @@ local function scan_mode()
                                 turtles[id] = {
                                     status = status.CONNECTING,
                                     name = name,
-                                    last_job_id=0,
+                                    last_job_id = 0,
                                     pending_cmds = {}
                                 }
                                 send_cmd('connect', name, id)
@@ -134,7 +134,7 @@ local function scan_mode()
                 end
             end
         elseif event == 'char' then
-            local character=event_data[2]
+            local character = event_data[2]
             if character == 'q' then
                 return
             end
@@ -161,4 +161,3 @@ local function startup()
 end
 
 startup()
-main_menu()
