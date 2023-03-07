@@ -33,7 +33,8 @@ local function send_cmd(func, args, turtle_id)
     local job={
         id=job_id,
         func=func,
-        args=args
+        args=args,
+        ts=os.time()
     }
     turtle.pending_cmds[job_id]=job
     rednet.send(turtle_id, job, PROTOCOL_NAME)
@@ -79,8 +80,10 @@ local function msg_handler(id, msg)
     local ret=msg.return_value
 
     if func=='connect' then
-        turtle.status=status.CONNECTED
-        turtle.name=ret
+        if turtle.status==status.CONNECTING then
+            turtle.status=status.CONNECTED
+            turtle.name=ret
+        end
     end
 end
 
@@ -111,15 +114,19 @@ local function scan_mode()
             if id ~= nil then
                 if msg.id==0 then
                     if msg.return_value==true then
-                        local name = gen_random_name()
-                        if name ~= nil then
-                            turtles[id] = {
-                                status = status.CONNECTING,
-                                name = name,
-                                last_job_id=0,
-                                pending_cmds = {}
-                            }
-                            send_cmd('connect', name, id)
+                        if turtles[id]~=nil then
+                            send_cmd('connect', turtles[id].name, id)
+                        else
+                            local name = gen_random_name()
+                            if name ~= nil then
+                                turtles[id] = {
+                                    status = status.CONNECTING,
+                                    name = name,
+                                    last_job_id=0,
+                                    pending_cmds = {}
+                                }
+                                send_cmd('connect', name, id)
+                            end
                         end
                     end
                 else
@@ -145,8 +152,11 @@ local function startup()
     sleep(1)
     turtles = {}
     scan_mode()
-    utils.clearAndResetTerm()
-    list_turtles()
+end
+
+local function main_menu()
+    
 end
 
 startup()
+main_menu()
