@@ -13,9 +13,15 @@ function utils.rednet_all_modems()
 end
 
 function utils.clearAndResetTerm()
-    term.setCursorPos(1,1)
     term.clear()
     term.setCursorPos(1,1)
 end
+
+function utils.write_center(text)
+    local x, y = term.getCursorPos()
+    local width, height = term.getSize()
+    term.setCursorPos(math.floor((width - #text) / 2) + 1, y)
+    term.write(text)
+  end
 
 return utils
