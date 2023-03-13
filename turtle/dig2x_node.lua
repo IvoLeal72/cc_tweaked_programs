@@ -72,6 +72,10 @@ local function function_runner()
     while true do
         while #command_buffer ~= 0 do
             local data = table.remove(command_buffer, 0)
+            table.insert(command_resp_buffer, {
+                id = data.id,
+                func = data.func
+            })
             local ret = function_map[data.func](data.args)
             table.insert(command_resp_buffer, {
                 id = data.id,

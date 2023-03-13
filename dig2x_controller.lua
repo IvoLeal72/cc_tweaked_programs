@@ -1,5 +1,9 @@
 local PROTOCOL_NAME = 'remote_dig'
-local status = { DISCONNECTED = 'DISCONNECTED', CONNECTING = 'CONNECTING', CONNECTED = 'CONNECTED' }
+local status = {DISCONNECTED = 'DISCONNECTED', 
+                CONNECTING = 'CONNECTING', 
+                CONNECTED = 'CONNECTED',
+                DIGGING = 'DIGGING',
+                MOVING = 'MOVING'}
 local utils = require('lib.utils')
 
 local names = {
@@ -24,6 +28,9 @@ local names = {
 
 local turtles = {}
 local run = true
+
+local direction = 'left'
+local depth = 60
 
 local function send_cmd(func, args, turtle_id)
     local turtle = turtles[turtle_id]
@@ -71,7 +78,7 @@ local function msg_handler(id, msg)
         return
     end
 
-    local job = table.remove(turtle.pending_cmds, msg.id)
+    local job = turtle.pending_cmds[msg.id]
     if job == nil then
         return
     end
@@ -84,6 +91,21 @@ local function msg_handler(id, msg)
         if turtle.status == status.CONNECTING then
             turtle.status = status.CONNECTED
             turtle.name = ret
+            table.remove(turtle.pending_cmds, msg.id)
+        end
+    else if func == 'dig' then
+        if ret == nil then
+            turtle.status = status.DIGGING
+        else
+            turtle.status = status.CONNECTED
+            table.remove(turtle.pending_cmds, msg.id)
+        end
+    else if func == 'move' then
+        if ret == nil then
+            turtle.status = status.MOVING
+        else
+            turtle.status = status.CONNECTED
+            table.remove(turtle.pending_cmds, msg.id)
         end
     end
 end
@@ -143,14 +165,34 @@ local function scan_mode()
     end
 end
 
+local function change_direction()
+    if direction=='left' then
+        direction ='right'
+    else 
+        direction = 'left' 
+    end
+end
+
+local function set_depth()
+    write('depth: ')
+    msg=read()
+    depth=tonumber(msg)
+end
+
+local function dig()
+    
+end
+
 local function main_menu()
     while true do
         utils.clearAndResetTerm()
         utils.write_center('Turtle Controller')
         term.setCursorPos(1,3)
+        print(string.format('direction: %s, depth:%d, turtles: %d', direction, depth, #turtles))
         list_turtles()
-        print()
         print('q -> quit')
+        print('r -> change direction')
+        print('d -> set depth')
         print('s -> scan mode')
         print('d -> dig')
         print('m -> move')
@@ -158,14 +200,18 @@ local function main_menu()
         local event_data = { os.pullEvent() }
         local event = event_data[1]
         if event == 'char' then
+            os.cancelTimer(timer)
             character = event_data[2]
             if character == 'q' then break
             else if character == 's' then scan_mode()
             else if character == 'd' then dig()
             else if character == 'm' then move()
+            else if character == 'r' then change_direction()
+            else if character == 'd' then set_depth()
             end
         else if event == 'rednet_message' then
-            
+            os.cancelTimer(timer)
+            msg_handler(event_data[2], event_data[3])
         end
     end
 end
