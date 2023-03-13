@@ -175,13 +175,13 @@ end
 
 local function set_depth()
     write('depth: ')
-    msg=read()
-    depth=tonumber(msg)
+    local msg=read()
+    local depth_num=tonumber(msg)
+    if depth_num ~= nil then
+        depth=depth_num
+    end
 end
 
-local function dig()
-    
-end
 
 local function main_menu()
     while true do
@@ -192,7 +192,7 @@ local function main_menu()
         list_turtles()
         print('q -> quit')
         print('r -> change direction')
-        print('d -> set depth')
+        print('t -> set depth')
         print('s -> scan mode')
         print('d -> dig')
         print('m -> move')
@@ -201,13 +201,13 @@ local function main_menu()
         local event = event_data[1]
         if event == 'char' then
             os.cancelTimer(timer)
-            character = event_data[2]
+            local character = event_data[2]
             if character == 'q' then break
             elseif character == 's' then scan_mode()
             elseif character == 'd' then dig()
             elseif character == 'm' then move()
             elseif character == 'r' then change_direction()
-            elseif character == 'd' then set_depth()
+            elseif character == 't' then set_depth()
             end
         elseif event == 'rednet_message' then
             os.cancelTimer(timer)
@@ -228,6 +228,4 @@ local function startup()
 end
 
 startup()
-while run do
-    main_menu()
-end
+main_menu()
