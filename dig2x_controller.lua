@@ -217,7 +217,6 @@ local function main_menu()
 end
 
 local function startup()
-    term.setTextScale()
     utils.rednet_all_modems()
     rednet.broadcast({ func = 'disconnect', args = {}, id = 0 }, PROTOCOL_NAME)
     term.setCursorPos(1, 1)
