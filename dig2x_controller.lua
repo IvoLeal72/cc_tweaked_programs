@@ -23,6 +23,7 @@ local names = {
 }
 
 local turtles = {}
+local run = true
 
 local function send_cmd(func, args, turtle_id)
     local turtle = turtles[turtle_id]
@@ -143,8 +144,30 @@ local function scan_mode()
 end
 
 local function main_menu()
-    utils.clearAndResetTerm()
-    utils.write_center('Turtle Controller')
+    while true do
+        utils.clearAndResetTerm()
+        utils.write_center('Turtle Controller')
+        term.setCursorPos(1,3)
+        list_turtles()
+        print()
+        print('q -> quit')
+        print('s -> scan mode')
+        print('d -> dig')
+        print('m -> move')
+        local timer = os.startTimer(2)
+        local event_data = { os.pullEvent() }
+        local event = event_data[1]
+        if event == 'char' then
+            character = event_data[2]
+            if character == 'q' then break
+            else if character == 's' then scan_mode()
+            else if character == 'd' then dig()
+            else if character == 'm' then move()
+            end
+        else if event == 'rednet_message' then
+            
+        end
+    end
 end
 
 local function startup()
@@ -156,8 +179,9 @@ local function startup()
     print('Starting...')
     sleep(1)
     turtles = {}
-    scan_mode()
-    main_menu()
 end
 
 startup()
+while run do
+    main_menu()
+end
