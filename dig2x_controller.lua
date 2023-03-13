@@ -203,13 +203,13 @@ local function main_menu()
             os.cancelTimer(timer)
             character = event_data[2]
             if character == 'q' then break
-            else if character == 's' then scan_mode()
-            else if character == 'd' then dig()
-            else if character == 'm' then move()
-            else if character == 'r' then change_direction()
-            else if character == 'd' then set_depth()
+            elseif character == 's' then scan_mode()
+            elseif character == 'd' then dig()
+            elseif character == 'm' then move()
+            elseif character == 'r' then change_direction()
+            elseif character == 'd' then set_depth()
             end
-        else if event == 'rednet_message' then
+        elseif event == 'rednet_message' then
             os.cancelTimer(timer)
             msg_handler(event_data[2], event_data[3])
         end
