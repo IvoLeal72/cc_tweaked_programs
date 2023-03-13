@@ -93,14 +93,14 @@ local function msg_handler(id, msg)
             turtle.name = ret
             table.remove(turtle.pending_cmds, msg.id)
         end
-    else if func == 'dig' then
+    elseif func == 'dig' then
         if ret == nil then
             turtle.status = status.DIGGING
         else
             turtle.status = status.CONNECTED
             table.remove(turtle.pending_cmds, msg.id)
         end
-    else if func == 'move' then
+    elseif func == 'move' then
         if ret == nil then
             turtle.status = status.MOVING
         else
