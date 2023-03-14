@@ -26,6 +26,12 @@ local names = {
     'Loki'
 }
 
+local function table_count(T)
+    local count = 0
+    for _ in pairs(T) do count = count + 1 end
+    return count
+end
+
 local turtles = {}
 local run = true
 
@@ -49,7 +55,7 @@ local function send_cmd(func, args, turtle_id)
 end
 
 local function gen_random_name()
-    if #turtles >= #names then
+    if table_count(turtles) >= #names then
         return nil
     end
     while true do
@@ -115,6 +121,8 @@ local function list_turtles()
         print(k .. ' ' .. v.name .. ' ' .. v.status)
     end
 end
+
+
 
 local function scan_mode()
     while true do
@@ -182,13 +190,25 @@ local function set_depth()
     end
 end
 
+local function dig()
+    for k, v in pairs(turtles) do 
+        send_cmd('dig', depth, k)
+    end
+end
+
+local function move()
+    for k, v in pairs(turtles) do 
+        send_cmd('move', {direction = direction, ammount = table_count(turtles)}, k)
+    end
+end
+
 
 local function main_menu()
     while true do
         utils.clearAndResetTerm()
         utils.write_center('Turtle Controller')
         term.setCursorPos(1,3)
-        print(string.format('direction: %s, depth: %d, turtles: %d', direction, depth, #turtles))
+        print(string.format('direction: %s, depth: %d, turtles: %d', direction, depth, table_count(turtles)))
         list_turtles()
         print('q -> quit')
         print('r -> change direction')
@@ -229,3 +249,6 @@ end
 
 startup()
 main_menu()
+for k, _ in pairs(turtles) do
+    send_cmd('disconnect', nil, k)
+end
