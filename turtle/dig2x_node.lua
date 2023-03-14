@@ -33,15 +33,17 @@ local function dig2x(depth)
         end
         sleep(0)
     end
+    turtle.turnLeft()
+    turtle.turnLeft()
     return true
 end
 
 local function moveToNextTunnel(args)
     turtle.up()
     if args.direction == "left" then
-        turtle.turnRight()
-    else
         turtle.turnLeft()
+    else
+        turtle.turnRight()
     end
     local i = 0
     while i < args.ammount * 3 do
